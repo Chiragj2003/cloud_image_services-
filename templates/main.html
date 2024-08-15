@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='/style.css') }}">
+    <script type="module" src="{{ url_for('static', path='/firebase-login.js') }}" ></script>
+</head>
+<body>
+    <div class="main">
+        <div id="login-box" hidden="true" >
+            <div class="box">
+                <div class="form-control">
+                    <p class="title">Login</p>
+                    <div class="input-field">
+                        <input required class="input" type="text" id="email" />
+                        <label class="label" for="input">Enter Email</label>
+                    </div>
+                    <div class="input-field">
+                        <input required class="input" type="text" id="password" />
+                        <label class="label" for="input">Enter Password</label>
+                    </div>
+                    <button class="submit-btn" id="login" >Sign In</button>
+                    <button class="submit-btn" id="sign-up" >Sign Up</button>
+                </div>
+            </div>
+        </div>
+        <button class="submit-btn sign-out " id="sign-out" hidden="true" >
+            LogOut 
+        </button>
+        {% if user_token %}
+            <div>
+                <div class="gallery-form">
+                    <form action="/create-gallery" method="post" class="form-control" >
+                        <p class="title">Create Gallery</p>
+                        <div class="input-field">
+                            <input required class="input" type="text" name="name"/>
+                            <label class="label" for="input">Enter Gallery Name</label>
+                        </div>
+                        <button class="submit-btn" type="submit" >Create</button>
+                    </form>
+                </div>
+                <hr/>
+                <div class="grid-structure">
+                    {% for gallery in galleries %}
+                        <div class="gallery-card">
+                            <a href="/gallery/{{ gallery.id }}">{{ gallery.get('name') }}</a>  
+                            {% if images.get(gallery.id) %}
+                                <img src="{{images.get(gallery.id)}}" alt="">
+                            {% endif %}
+                            <div class="options">
+                                <a href="/gallery/edit/{{ gallery.id }}">
+                                    Edit
+                                </a>
+                                <form action="/gallery/delete/{{ gallery.id }}" method="get" onsubmit="return onSubmit()" >
+                                    <button type="submit">
+                                        Delete
+                                    </button>
+                                </form>
+                            </div>
+                            <div class="share-btn">
+                                <a  href="/share/{{gallery.id}}">Share</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+    <script>
+        function onSubmit() {
+            return confirm("Are you confirmed?");
+        }
+    </script>
+</body>
+</html>

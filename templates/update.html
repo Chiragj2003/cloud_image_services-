@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Gallery</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='/style.css') }}">
+</head>
+<body>
+    <div class="box">
+        <form action="/gallery/edit/{{ gallery.id }}" method="post" class="form-control" >
+            <p class="title">Edit Gallery</p>
+            <div class="input-field">
+                <input required class="input" value="{{ gallery.get('name') }}" type="text" name="name"/>
+                <label class="label" for="input" >Enter Gallery Name</label>
+            </div>
+            <button class="submit-btn" type="submit" >Edit</button>
+            <button type="button" class="submit-btn">
+                <a href="/" class="underline" >Back</a>
+            </button>
+        </form>
+    </div>
+</body>
+</html>

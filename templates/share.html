@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Share {{gallery.get('name')}}</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='/style.css') }}">
+</head>
+<body>
+    <main class="main">
+        <button type="button" class="submit-btn btn-padding">
+            <a href="/" class="underline" >Back</a>
+        </button>
+        <div class="gallery-form">
+            <form class="form-control" action="/share/allow/{{gallery.id}}" method="post" >
+                <p class="title">Give Access</p>
+                <div class="input-field">
+                    <input required class="input" type="text" name="email" />
+                    <label class="label" for="input">Enter Email</label>
+                </div>
+                <button type="submit" class="submit-btn" >Continue</button>
+            </form>
+        </div>
+        <section class="gallery-section">
+            <div class="allowed-users">
+                <h2 class="title" >Restrict Access</h2>
+                <div class="allowed-users">
+                    {% for user in gallery.get('access') %}
+                        <form action="/share/disallow/{{gallery.id}}" class="access" method="post" >
+                            <input type="text" name="email" hidden value={{user}}>
+                            <strong>{{user}}</strong>
+                            <button>Remove</button>
+                        </form>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
