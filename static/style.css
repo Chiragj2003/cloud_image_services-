@@ -4,8 +4,8 @@
 }
 
 .main {
-    padding-left: 10px;
-    padding-right: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
 }
 
 .box {
@@ -107,4 +107,69 @@
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.grid-structure{
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 2rem;
+}
+
+.gallery-card {
+    padding: 1.5rem;
+    background: #620960;
+    border-radius: 16px;
+    overflow: hidden;
+    color: #ecedec;
+}
+
+.gallery-card a {
+    color: white;
+    line-clamp: 1;
+    font-size: 18px;
+    font-weight: 700;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.options {
+    padding-top: 10px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.options a {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+    color: #1b1b1b;
+    font-size: 14px;
+    border-radius: 16px;
+}
+
+.options button {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+    color: #1b1b1b;
+    font-size: 14px;
+    border-radius: 16px;
+    width: 100%;
+    border: none;
+}
+
+.underline{
+    text-decoration: none;
+    color: white;
 }

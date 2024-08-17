@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Home</title>
     <link rel="stylesheet" href="{{ url_for('static', path='/style.css') }}">
     <script type="module" src="{{ url_for('static', path='/firebase-login.js') }}" ></script>
 </head>
@@ -40,6 +40,24 @@
                         </div>
                         <button class="submit-btn" type="submit" >Create</button>
                     </form>
+                </div>
+                <hr/>
+                <div class="grid-structure">
+                    {% for gallery in galleries %}
+                        <div class="gallery-card">
+                            <a href="/gallery/{{ gallery.id }}">{{ gallery.get('name') }}</a>  
+                            <div class="options">
+                                <a href="/gallery/edit/{{ gallery.id }}">
+                                    Edit
+                                </a>
+                                <form action="">
+                                    <button>
+                                        Delete
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    {% endfor %}
                 </div>
             </div>
         {% endif %}
