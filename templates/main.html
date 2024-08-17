@@ -29,9 +29,20 @@
         <button class="submit-btn sign-out " id="sign-out" hidden="true" >
             LogOut 
         </button>
-        <div>
-
-        </div>
+        {% if user_token %}
+            <div>
+                <div class="gallery-form">
+                    <form action="/create-gallery" method="post" class="form-control" >
+                        <p class="title">Create Gallery</p>
+                        <div class="input-field">
+                            <input required class="input" type="text" name="name"/>
+                            <label class="label" for="input">Enter Gallery Name</label>
+                        </div>
+                        <button class="submit-btn" type="submit" >Create</button>
+                    </form>
+                </div>
+            </div>
+        {% endif %}
     </div>
 </body>
 </html>
