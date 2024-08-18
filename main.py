@@ -5,9 +5,10 @@ from fastapi.templating import Jinja2Templates
 import google.auth
 import google.oauth2.id_token
 from google.auth.transport import requests
-from google.cloud import firestore
+from google.cloud import firestore, storage
 import starlette.status as status
 from datetime import datetime
+import local_constants
 
 
 app = FastAPI()
@@ -186,3 +187,38 @@ async def gallery(req: Request, galleryId:str):
     
     return templets.TemplateResponse('gallery.html', { 'request' : req, 'user_token': user_token, "gallery": gallery.get() })
     
+
+def addFile (file):
+    storage_client = storage.Client( project = local_constants.PROJECT_NAME )
+    bucket = storage_client.bucket(local_constants.PROJECT_STORAGE_BUCKET)
+    blob = storage.Blob(file.filename, bucket)
+    blob.upload_from_file(file.file)
+    blob.make_public()
+    return blob.public_url
+
+
+@app.post("/upload-image/{id}", response_class=RedirectResponse)
+async def uploadImage ( req: Request, id: str ):
+    id_token = req.cookies.get("token")
+    user_token = None
+    user_token = validateFirebaseToken(id_token)
+
+    if not user_token:
+        return templets.TemplateResponse('main.html', { 'request' : req, 'user_token' : None , 'user_info': None })
+    
+    gallery = firestore_db.collection('galleries').document(id).get()
+    if not gallery.exists and gallery.get('userId') != user_token['userId']:
+        return RedirectResponse("/")
+    
+    form = await req.form()
+    url = addFile( form['image'] )
+
+    firestore_db.collection('images').document().set({
+        "url" : url,
+        "name" : form['image'].filename,
+        "galleryId" : gallery.id,
+        "userId" : user_token['user_id'],
+        "created" : datetime.now()
+    })
+    
+    return RedirectResponse(f"/gallery/{id}", status_code=status.HTTP_302_FOUND)
