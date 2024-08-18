@@ -50,8 +50,8 @@
                                 <a href="/gallery/edit/{{ gallery.id }}">
                                     Edit
                                 </a>
-                                <form action="">
-                                    <button>
+                                <form action="/gallery/delete/{{ gallery.id }}" method="get" onsubmit="return onSubmit()" >
+                                    <button type="submit">
                                         Delete
                                     </button>
                                 </form>
@@ -62,5 +62,10 @@
             </div>
         {% endif %}
     </div>
+    <script>
+        function onSubmit() {
+            return confirm("Are you confirmed?");
+        }
+    </script>
 </body>
 </html>

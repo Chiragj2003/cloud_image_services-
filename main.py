@@ -152,3 +152,37 @@ async def editGallery(req: Request, galleryId:str):
         
     gallery.update({ "name": form['name']})    
     return RedirectResponse("/", status_code=status.HTTP_302_FOUND)
+
+
+@app.get("/gallery/delete/{galleryId}", response_class=RedirectResponse)
+async def deleteGallery(req: Request, galleryId:str):
+    id_token = req.cookies.get("token")
+    user_token = None
+    user_token = validateFirebaseToken(id_token)
+
+    if not user_token:
+        return templets.TemplateResponse('main.html', { 'request' : req, 'user_token' : None })
+
+    gallery = firestore_db.collection('galleries').document(galleryId)
+    if not gallery.get().exists or gallery.get().get('userId') != user_token['user_id']:
+        return RedirectResponse("/", status_code=status.HTTP_302_FOUND)
+    
+    gallery.delete()
+    return RedirectResponse("/", status_code=status.HTTP_302_FOUND)
+
+
+@app.get("/gallery/{galleryId}", response_class=RedirectResponse)
+async def gallery(req: Request, galleryId:str):
+    id_token = req.cookies.get("token")
+    user_token = None
+    user_token = validateFirebaseToken(id_token)
+
+    if not user_token:
+        return templets.TemplateResponse('main.html', { 'request' : req, 'user_token' : None })
+
+    gallery = firestore_db.collection('galleries').document(galleryId)
+    if not gallery.get().exists or gallery.get().get('userId') != user_token['user_id']:
+        return RedirectResponse("/", status_code=status.HTTP_302_FOUND)
+    
+    return templets.TemplateResponse('gallery.html', { 'request' : req, 'user_token': user_token, "gallery": gallery.get() })
+    
