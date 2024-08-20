@@ -25,6 +25,14 @@
                 </button> 
             </label>
         </form>
+        <hr/>
+        <div class="grid-structure" > 
+            {% for image in images %}
+                <div class="image-card">
+                    <img src="{{ image.get('url') }}" alt="">
+                </div>
+            {% endfor %}
+        </div>
     </main>
 </body>
 </html>

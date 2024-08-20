@@ -185,7 +185,10 @@ async def gallery(req: Request, galleryId:str):
     if not gallery.get().exists or gallery.get().get('userId') != user_token['user_id']:
         return RedirectResponse("/", status_code=status.HTTP_302_FOUND)
     
-    return templets.TemplateResponse('gallery.html', { 'request' : req, 'user_token': user_token, "gallery": gallery.get() })
+    images = firestore_db.collection('images').where("galleryId", "==", galleryId).get()
+    print(images)
+    
+    return templets.TemplateResponse('gallery.html', { 'request' : req, 'user_token': user_token, "gallery": gallery.get(), "images" : images })
     
 
 def addFile (file):
@@ -222,3 +225,6 @@ async def uploadImage ( req: Request, id: str ):
     })
     
     return RedirectResponse(f"/gallery/{id}", status_code=status.HTTP_302_FOUND)
+
+
+

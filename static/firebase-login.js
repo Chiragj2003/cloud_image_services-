@@ -12,6 +12,7 @@ const firebaseConfig = {
     appId: ""
 };
 
+
 window.addEventListener("load", function(){
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);

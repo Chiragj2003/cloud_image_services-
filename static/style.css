@@ -222,3 +222,19 @@
     padding-left: 12px;
     padding-right: 12px;
 }
+
+.image-card {
+  padding: 1.5rem;
+  background: #620960;
+  border-radius: 16px;
+  overflow: hidden;
+  color: #ecedec;
+}
+
+.image-card img {
+  aspect-ratio: 4/3;
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+  object-position: center;
+}
