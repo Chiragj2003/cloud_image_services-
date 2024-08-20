@@ -110,8 +110,8 @@
 }
 
 .grid-structure {
-  padding-top: 4rem;
-  padding-bottom: 4rem;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 2rem;
@@ -262,4 +262,8 @@
 .image-card button:hover {
   background: #ededed;
   scale: 105%;
+}
+
+.gallery-section {
+  padding-top: 4rem;
 }

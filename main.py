@@ -9,7 +9,7 @@ from google.cloud import firestore, storage
 import starlette.status as status
 from datetime import datetime
 import local_constants
-
+import hashlib
 
 app = FastAPI()
 
@@ -186,9 +186,19 @@ async def gallery(req: Request, galleryId:str):
         return RedirectResponse("/", status_code=status.HTTP_302_FOUND)
     
     images = firestore_db.collection('images').where("galleryId", "==", galleryId).get()
-    print(images)
+    duplicatesInSameGallery = []
+    seen = []
+    for image in images:
+        hashId = image.get('hashId')
+        print(hashId)
+        if hashId in seen:
+            duplicatesInSameGallery.append(image)
+        else:
+            seen.append(hashId)
+
+    del(seen)
     
-    return templets.TemplateResponse('gallery.html', { 'request' : req, 'user_token': user_token, "gallery": gallery.get(), "images" : images })
+    return templets.TemplateResponse('gallery.html', { 'request' : req, 'user_token': user_token, "gallery": gallery.get(), "images" : images, "duplicatesInSameGallery": duplicatesInSameGallery })
     
 
 def addFile (file):
@@ -198,6 +208,14 @@ def addFile (file):
     blob.upload_from_file(file.file)
     blob.make_public()
     return blob.public_url
+
+
+def hashing( file ):
+    hash = hashlib.md5()
+    content = file.file.read()
+    hash.update(content)
+    file.file.seek(0)
+    return hash.hexdigest()
 
 
 @app.post("/upload-image/{id}", response_class=RedirectResponse)
@@ -214,6 +232,7 @@ async def uploadImage ( req: Request, id: str ):
         return RedirectResponse("/")
     
     form = await req.form()
+    hashId = hashing(form['image'])
     url = addFile( form['image'] )
 
     firestore_db.collection('images').document().set({
@@ -221,7 +240,8 @@ async def uploadImage ( req: Request, id: str ):
         "name" : form['image'].filename,
         "galleryId" : gallery.id,
         "userId" : user_token['user_id'],
-        "created" : datetime.now()
+        "created" : datetime.now(),
+        "hashId" : hashId
     })
     
     return RedirectResponse(f"/gallery/{id}", status_code=status.HTTP_302_FOUND)
