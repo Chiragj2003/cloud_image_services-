@@ -13,6 +13,7 @@ const firebaseConfig = {
 };
 
 
+
 window.addEventListener("load", function(){
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);

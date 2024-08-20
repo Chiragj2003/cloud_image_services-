@@ -229,6 +229,9 @@
   border-radius: 16px;
   overflow: hidden;
   color: #ecedec;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 .image-card img {
@@ -237,4 +240,26 @@
   width: 100%;
   object-fit: contain;
   object-position: center;
+}
+
+.image-card button {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  color: #1b1b1b;
+  font-size: 14px;
+  border-radius: 16px;
+  width: 100%;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s cubic-bezier(0.15, 0.83, 0.66, 1);
+}
+
+.image-card button:hover {
+  background: #ededed;
+  scale: 105%;
 }

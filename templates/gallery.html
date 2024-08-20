@@ -26,13 +26,18 @@
             </label>
         </form>
         <hr/>
-        <div class="grid-structure" > 
+        <section class="grid-structure" > 
             {% for image in images %}
                 <div class="image-card">
                     <img src="{{ image.get('url') }}" alt="">
+                    <form action="/image/delete/{{ image.id }}" method="get" >
+                        <button type="submit" >
+                            Delete
+                        </button>
+                    </form>
                 </div>
             {% endfor %}
-        </div>
+        </section>
     </main>
 </body>
 </html>
