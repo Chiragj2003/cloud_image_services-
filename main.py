@@ -188,6 +188,7 @@ async def gallery(req: Request, galleryId:str):
     images = firestore_db.collection('images').where("galleryId", "==", galleryId).get()
     duplicatesInSameGallery = []
     seen = []
+    hashes = set()
     for image in images:
         hashId = image.get('hashId')
         print(hashId)
@@ -195,10 +196,16 @@ async def gallery(req: Request, galleryId:str):
             duplicatesInSameGallery.append(image)
         else:
             seen.append(hashId)
-
+        hashes.add(hashId)
     del(seen)
+
+    userImages = firestore_db.collection('images').where('userId', "==", user_token['user_id']).get()
+    duplicateImageInOtherGalleries = []
+    for image in userImages:
+        if image.get("galleryId")!=galleryId and image.get("hashId") in hashes:
+            duplicateImageInOtherGalleries.append(image)
     
-    return templets.TemplateResponse('gallery.html', { 'request' : req, 'user_token': user_token, "gallery": gallery.get(), "images" : images, "duplicatesInSameGallery": duplicatesInSameGallery })
+    return templets.TemplateResponse('gallery.html', { 'request' : req, 'user_token': user_token, "gallery": gallery.get(), "images" : images, "duplicatesInSameGallery": duplicatesInSameGallery, "duplicateImageInOtherGalleries" : duplicateImageInOtherGalleries })
     
 
 def addFile (file):

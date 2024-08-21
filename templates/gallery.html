@@ -43,6 +43,22 @@
         </section>
         <hr/>
         <section class="gallery-section" > 
+            <h2 class="title" >Duplicate images in all galleries</h2>
+            <div class="grid-structure" >
+                {% for image in duplicateImageInOtherGalleries %}
+                    <div class="image-card">
+                        <img src="{{ image.get('url') }}" alt="">
+                        <form action="/image/delete/{{ image.id }}" method="get" >
+                            <button type="submit" >
+                                Delete
+                            </button>
+                        </form>
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+        <hr/>
+        <section class="gallery-section" > 
             <h2 class="title" >Gallery Images</h2>
             <div class="grid-structure" >
                 {% for image in images %}
