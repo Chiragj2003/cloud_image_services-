@@ -3,7 +3,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
 
-
 const firebaseConfig = {
     apiKey: "",
     authDomain: "",
@@ -12,7 +11,6 @@ const firebaseConfig = {
     messagingSenderId: "",
     appId: ""
 };
-
 
 
 window.addEventListener("load", function(){

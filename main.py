@@ -43,11 +43,14 @@ async def root(request: Request):
         .get()
     )
 
+    images = galleryFistImage(galleries)
+    
     return templets.TemplateResponse(
         "main.html",
         {   "request": request,
             "user_token": user_token,
-            "galleries": galleries
+            "galleries": galleries,
+            "images" : images
         }
     )
 
@@ -272,5 +275,10 @@ async def deleteImage ( req: Request, id: str ):
     
     return RedirectResponse(f"/gallery/{galleryId}", status_code=status.HTTP_302_FOUND)
 
-
-
+def galleryFistImage( galleries ):
+    images = {}
+    for gallery in galleries:
+        image = firestore_db.collection('images').where('galleryId', '==', gallery.id).order_by("created", "ASCENDING").limit(1).get()
+        if len(image) != 0:
+            images[gallery.id] = image[0].get('url')
+    return images

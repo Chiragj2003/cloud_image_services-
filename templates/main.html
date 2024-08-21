@@ -46,6 +46,9 @@
                     {% for gallery in galleries %}
                         <div class="gallery-card">
                             <a href="/gallery/{{ gallery.id }}">{{ gallery.get('name') }}</a>  
+                            {% if images.get(gallery.id) %}
+                                <img src="{{images.get(gallery.id)}}" alt="">
+                            {% endif %}
                             <div class="options">
                                 <a href="/gallery/edit/{{ gallery.id }}">
                                     Edit
